@@ -5,7 +5,9 @@ export const ParagonContext = React.createContext({});
 
 const Paragon = ({ dependencies, children }) => {
   const contextValue = useMemo(
-    () => dependencies,
+    () => ({
+      dependencies,
+    }),
     [dependencies],
   );
 

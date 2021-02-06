@@ -8,7 +8,8 @@ import { ParagonContext } from '../Paragon';
 const Button = React.forwardRef(({
   children, onClick, ...attrs
 }, ref) => {
-  const { analytics } = useContext(ParagonContext);
+  const { dependencies } = useContext(ParagonContext);
+  const { analytics } = dependencies || {};
 
   return (
     <ButtonBase
