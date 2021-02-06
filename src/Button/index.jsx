@@ -14,7 +14,7 @@ const Button = React.forwardRef(({
     <ButtonBase
       ref={ref}
       {...attrs}
-      onClick={() => {
+      onClick={(e) => {
         if (dependencies?.analytics?.sendTrackEvent) {
           console.log('edx.bi.paragon.button');
           dependencies.analytics.sendTrackEvent({
@@ -22,7 +22,7 @@ const Button = React.forwardRef(({
           });
         }
         if (onClick) {
-          onClick();
+          onClick(e);
         }
       }}
     >
