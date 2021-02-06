@@ -8,16 +8,16 @@ import { ParagonContext } from '../Paragon';
 const Button = React.forwardRef(({
   children, onClick, ...attrs
 }, ref) => {
-  const dependencies = useContext(ParagonContext);
+  const { analytics } = useContext(ParagonContext);
 
   return (
     <ButtonBase
       ref={ref}
       {...attrs}
       onClick={(e) => {
-        if (dependencies?.analytics?.sendTrackEvent) {
+        if (analytics?.sendTrackEvent) {
           console.log('edx.bi.paragon.button');
-          dependencies.analytics.sendTrackEvent({
+          analytics.sendTrackEvent({
             event: 'edx.bi.paragon.button',
           });
         }
