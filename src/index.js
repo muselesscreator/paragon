@@ -105,3 +105,5 @@ export { default as useWindowSize } from './hooks/useWindowSize';
 // rather than setting a peer dependency in this project, we opt to tightly
 // couple these dependencies by passing through needed functionality.
 export { useTable } from 'react-table';
+
+export { default as Paragon } from './Paragon';
