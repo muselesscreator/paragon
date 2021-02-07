@@ -106,4 +106,7 @@ export { default as useWindowSize } from './hooks/useWindowSize';
 // couple these dependencies by passing through needed functionality.
 export { useTable } from 'react-table';
 
+// ``Paragon`` provides an HOC that allows consumers of @edx/paragon to inject dependencies
+// to enable dispatching analytics events from components, i18n, and logging using services
+// from @edx/frontend-platform.
 export { default as Paragon } from './Paragon';

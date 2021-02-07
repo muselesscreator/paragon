@@ -17,9 +17,9 @@ const Button = React.forwardRef(({
       {...attrs}
       onClick={(e) => {
         if (analytics?.sendTrackEvent) {
-          console.log('edx.bi.paragon.button');
+          // check the console.log from frontend-platform's example app when this button is clicked
           analytics.sendTrackEvent({
-            event: 'edx.bi.paragon.button',
+            event: 'edx.bi.paragon.button.click',
           });
         }
         if (onClick) {
