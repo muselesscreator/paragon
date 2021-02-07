@@ -20,7 +20,11 @@ const Paragon = ({ dependencies, children }) => {
 
 Paragon.propTypes = {
   children: PropTypes.node.isRequired,
-  dependencies: PropTypes.shape({}), // TODO: fill this out
+  dependencies: PropTypes.shape({
+    analytics: PropTypes.shape({
+      sendTrackEvent: PropTypes.func,
+    }),
+  }),
 };
 
 Paragon.defaultProps = {

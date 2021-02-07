@@ -5,11 +5,12 @@ import ButtonBase from 'react-bootstrap/Button';
 import ButtonDeprecated from './deprecated';
 import { ParagonContext } from '../Paragon';
 
-const Button = React.forwardRef(({
-  children, onClick, ...attrs
-}, ref) => {
+const Button = React.forwardRef((props, ref) => {
   const { dependencies } = useContext(ParagonContext);
   const { analytics } = dependencies || {};
+  const {
+    children, onClick, ...attrs
+  } = props;
 
   return (
     <ButtonBase
@@ -19,7 +20,8 @@ const Button = React.forwardRef(({
         if (analytics?.sendTrackEvent) {
           // check the console.log from frontend-platform's example app when this button is clicked
           analytics.sendTrackEvent({
-            event: 'edx.bi.paragon.button.click',
+            event: 'edx.paragon.Button.click',
+            attributes: { ...props },
           });
         }
         if (onClick) {
