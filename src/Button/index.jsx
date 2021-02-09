@@ -15,7 +15,6 @@ const Button = React.forwardRef(({
   ...attrs
 }, ref) => {
   useTrackComponentOnMount('edx.ui.paragon.Button.mounted', attrs);
-
   const sendTrackingLogEvent = useSendTrackingLogEvent(analyticsEvent);
 
   const handleClick = (e) => {

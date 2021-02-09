@@ -1,21 +1,24 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 
-import { ParagonContext } from '../ParagonProvider';
 import useIsMounted from './useIsMounted';
+import useAnalytics from './useAnalytics';
+
+import packageJSON from '../../package.json';
 
 const useTrackComponentOnMount = (eventName, attrs) => {
   const isMounted = useIsMounted();
-  const { analytics } = useContext(ParagonContext) || {};
+  const analytics = useAnalytics();
 
   useEffect(
     () => {
       if (isMounted.current && analytics?.sendTrackingLogEvent) {
         analytics.sendTrackingLogEvent(eventName, {
-          ...attrs,
+          paragonVersion: packageJSON.version,
+          attributes: attrs,
         });
       }
     },
-    [isMounted],
+    [isMounted, analytics],
   );
 };
 

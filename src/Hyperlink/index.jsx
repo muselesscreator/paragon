@@ -27,6 +27,7 @@ const Hyperlink = (props) => {
     externalLinkTitle,
     ...attrs,
   };
+
   useTrackComponentOnMount('edx.ui.paragon.Hyperlink.mounted', eventProperties);
   const sendTrackingLogEvent = useSendTrackingLogEvent(analyticsEvent);
 
