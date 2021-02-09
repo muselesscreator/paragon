@@ -4,47 +4,74 @@ import PropTypes from 'prop-types';
 import isRequiredIf from 'react-proptype-conditional-require';
 
 import withDeprecatedProps, { DEPR_TYPES } from '../withDeprecatedProps';
+import {
+  useSendTrackingLogEvent,
+  useTrackComponentOnMount,
+  useAnalytics,
+} from '../hooks';
 
-function Hyperlink(props) {
+const Hyperlink = (props) => {
   const {
+    analyticsEvent,
     destination,
     children,
     target,
     onClick,
     externalLinkAlternativeText,
     externalLinkTitle,
-    ...other
+    ...attrs
   } = props;
+  const eventProperties = {
+    destination,
+    target,
+    externalLinkAlternativeText,
+    externalLinkTitle,
+    ...attrs,
+  };
+  useTrackComponentOnMount('edx.ui.paragon.Hyperlink.mounted', eventProperties);
+  const analytics = useAnalytics();
+  const sendTrackingLogEvent = useSendTrackingLogEvent(analyticsEvent);
 
   let externalLinkIcon;
 
   if (target === '_blank') {
     // Add this rel attribute to prevent Reverse Tabnabbing
-    other.rel = other.rel ? `noopener ${other.rel}` : 'noopener';
+    attrs.rel = attrs.rel ? `noopener ${attrs.rel}` : 'noopener';
 
     externalLinkIcon = (
-      // Space between content and icon
-      <span>{' '}
-        <span
-          className={classNames('fa', 'fa-external-link')}
-          aria-hidden={false}
-          aria-label={externalLinkAlternativeText}
-          title={externalLinkTitle}
-        />
-      </span>
+      <span
+        className={classNames('fa', 'fa-external-link')}
+        aria-hidden={false}
+        aria-label={externalLinkAlternativeText}
+        title={externalLinkTitle}
+      />
     );
   }
+
+  // delay execution of link navigation to allow for tracking log event call to resolve
+  // when navigating away from the page. similar to Segment's ``analytics.trackLink``:
+  // https://segment.com/docs/connections/sources/catalog/libraries/website/javascript/#track-link
+  const handleClick = (e) => {
+    e.preventDefault();
+    sendTrackingLogEvent().finally(() => {
+      if (onClick) {
+        onClick(e);
+      }
+      global.location.href = destination;
+    });
+  };
 
   return (
     <a
       href={destination}
       target={target}
-      onClick={onClick}
-      {...other}
-    >{children}{externalLinkIcon}
+      onClick={handleClick}
+      {...attrs}
+    >
+      {children}{' '}{externalLinkIcon}
     </a>
   );
-}
+};
 
 Hyperlink.defaultProps = {
   target: '_self',
@@ -74,6 +101,13 @@ Hyperlink.propTypes = {
     PropTypes.string,
     props => props.target === '_blank',
   ),
+  analyticsEvent: PropTypes.shape({
+    eventName: PropTypes.string.isRequired,
+  }),
+};
+
+Hyperlink.defaultProps = {
+  analyticsEvent: undefined,
 };
 
 export default withDeprecatedProps(Hyperlink, 'Hyperlink', {

@@ -1,33 +1,36 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import ButtonBase from 'react-bootstrap/Button';
 
-import ButtonDeprecated from './deprecated';
-import { ParagonContext } from '../Paragon';
+import {
+  useSendTrackingLogEvent,
+  useTrackComponentOnMount,
+} from '../hooks';
 
-const Button = React.forwardRef((props, ref) => {
-  const { dependencies } = useContext(ParagonContext);
-  const { analytics } = dependencies || {};
-  const {
-    children, onClick, ...attrs
-  } = props;
+import ButtonDeprecated from './deprecated';
+
+const Button = React.forwardRef(({
+  children,
+  analyticsEvent,
+  ...attrs
+}, ref) => {
+  useTrackComponentOnMount('edx.ui.paragon.Button.mounted', attrs);
+
+  const sendTrackingLogEvent = useSendTrackingLogEvent(analyticsEvent);
+
+  const handleClick = (e) => {
+    sendTrackingLogEvent();
+
+    if (attrs?.onClick) {
+      attrs.onClick(e);
+    }
+  };
 
   return (
     <ButtonBase
       ref={ref}
       {...attrs}
-      onClick={(e) => {
-        if (analytics?.sendTrackEvent) {
-          // check the console.log from frontend-platform's example app when this button is clicked
-          analytics.sendTrackEvent({
-            event: 'edx.paragon.Button.click',
-            attributes: { ...props },
-          });
-        }
-        if (onClick) {
-          onClick(e);
-        }
-      }}
+      onClick={handleClick}
     >
       {children}
     </ButtonBase>
@@ -37,10 +40,14 @@ const Button = React.forwardRef((props, ref) => {
 Button.propTypes = {
   children: PropTypes.node.isRequired,
   onClick: PropTypes.func,
+  analyticsEvent: PropTypes.shape({
+    eventName: PropTypes.string.isRequired,
+  }),
 };
 
 Button.defaultProps = {
   onClick: undefined,
+  analyticsEvent: undefined,
 };
 
 Button.Deprecated = ButtonDeprecated;

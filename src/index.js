@@ -98,7 +98,9 @@ export { default as BulkActions } from './DataTable/BulkActions';
 export { default as TableControlBar } from './DataTable/TableControlBar';
 export { default as ToggleButton, ToggleButtonGroup } from './ToggleButton';
 export { default as Variant } from './utils/constants';
-export { default as useWindowSize } from './hooks/useWindowSize';
+
+// Custom hooks
+export { useWindowSize } from './hooks';
 
 // Pass through any needed whole third-party library functionality
 // useTable for example is needed to use the DataTable component seamlessly
@@ -106,7 +108,7 @@ export { default as useWindowSize } from './hooks/useWindowSize';
 // couple these dependencies by passing through needed functionality.
 export { useTable } from 'react-table';
 
-// ``Paragon`` provides an HOC that allows consumers of @edx/paragon to inject dependencies
+// ``ParagonProvider`` is a HOC that allows consumers of @edx/paragon to inject dependencies
 // to enable dispatching analytics events from components, i18n, and logging using services
 // from @edx/frontend-platform.
-export { default as Paragon } from './Paragon';
+export { default as ParagonProvider } from './ParagonProvider';
