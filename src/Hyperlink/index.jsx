@@ -66,7 +66,13 @@ const Hyperlink = (props) => {
       onClick={handleClick}
       {...attrs}
     >
-      {children}{' '}{externalLinkIcon}
+      {children}
+      {externalLinkIcon && (
+        <>
+          {' '}
+          {externalLinkIcon}
+        </>
+      )}
     </a>
   );
 };
@@ -76,6 +82,7 @@ Hyperlink.defaultProps = {
   onClick: () => {},
   externalLinkAlternativeText: 'Opens in a new window',
   externalLinkTitle: 'Opens in a new window',
+  analyticsEvent: undefined,
 };
 
 Hyperlink.propTypes = {
@@ -102,10 +109,6 @@ Hyperlink.propTypes = {
   analyticsEvent: PropTypes.shape({
     eventName: PropTypes.string.isRequired,
   }),
-};
-
-Hyperlink.defaultProps = {
-  analyticsEvent: undefined,
 };
 
 export default withDeprecatedProps(Hyperlink, 'Hyperlink', {
