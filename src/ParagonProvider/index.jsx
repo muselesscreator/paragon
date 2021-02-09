@@ -26,22 +26,12 @@ const ParagonProvider = ({
 ParagonProvider.propTypes = {
   children: PropTypes.node.isRequired,
   analytics: PropTypes.shape({
-    sendTrackEvent: PropTypes.func,
     sendTrackingLogEvent: PropTypes.func,
   }),
-  i18n: PropTypes.shape({
-    pagination: PropTypes.shape({
-      next: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-      previous: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-    }),
-  }),
-  logging: PropTypes.shape({}), // TODO: fill me out
 };
 
 ParagonProvider.defaultProps = {
   analytics: undefined,
-  i18n: undefined,
-  logging: undefined,
 };
 
 export default ParagonProvider;
