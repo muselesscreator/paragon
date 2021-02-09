@@ -5,7 +5,6 @@ export const ParagonContext = React.createContext({});
 
 const ParagonProvider = ({
   analytics,
-  logging,
   children,
 }) => {
   // ``contextValue`` must be memoized such that re-renders of ParagonProvider do
@@ -13,7 +12,6 @@ const ParagonProvider = ({
   const contextValue = useMemo(
     () => ({
       analytics,
-      logging,
     }),
     [analytics],
   );

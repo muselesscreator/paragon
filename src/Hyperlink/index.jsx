@@ -7,7 +7,6 @@ import withDeprecatedProps, { DEPR_TYPES } from '../withDeprecatedProps';
 import {
   useSendTrackingLogEvent,
   useTrackComponentOnMount,
-  useAnalytics,
 } from '../hooks';
 
 const Hyperlink = (props) => {
@@ -29,7 +28,6 @@ const Hyperlink = (props) => {
     ...attrs,
   };
   useTrackComponentOnMount('edx.ui.paragon.Hyperlink.mounted', eventProperties);
-  const analytics = useAnalytics();
   const sendTrackingLogEvent = useSendTrackingLogEvent(analyticsEvent);
 
   let externalLinkIcon;
